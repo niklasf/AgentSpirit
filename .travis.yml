@@ -1,0 +1,10 @@
+language: cpp
+compiler:
+  - clang
+sudo: true
+before_install:
+  - sudo apt-get update
+install:
+  - sudo apt-get install libboost-dev openmpi-bin
+script:
+  - make test

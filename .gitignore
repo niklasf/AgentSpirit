@@ -1,0 +1,15 @@
+agentspirit
+test
+
+.depend
+
+src/test.o
+src/term.o
+src/main.o
+src/unification.o
+src/printer.o
+src/runtime/environment.o
+src/runtime/interpreter.o
+
+*.swp
+*.swo

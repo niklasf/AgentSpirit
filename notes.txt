@@ -1,0 +1,11 @@
+Additions:
+
+ * Comparisons like a < b < c.
+
+Things to watch out for:
+
+ * Order in logical consequence checking: X < Y & X = 2 & Y = 1 actually
+   evaluates to true.
+ * Negations must be ground.
+ * Not nescessarily unifiable rule heads (ordered unification).
+ * `X` is a string in `.my_name(X)`.
