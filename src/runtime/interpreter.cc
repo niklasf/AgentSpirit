@@ -20,6 +20,7 @@
 #include <memory>
 #include <stdexcept>
 #include <algorithm>
+#include <iostream>
 
 #include "../unification.h"
 #include "../printer.h"
@@ -83,11 +84,12 @@ bool Interpreter::Run(Environment *env, as::Agent *agent) {
 
     if (frame.external) {
         // TODO: Warning: No plan found! Also emit failure events.
-        agent->intents.pop_front();
         if (frame.goal_type == as::Plan::kAchievement) {
-            std::cout << frame.trigger.functor << std::endl;
+            std::cout << "no plan found: " << frame.trigger.functor << "/" << frame.trigger.terms.size() << std::endl;
+            agent->intents.pop_front();
             throw std::runtime_error("no plan found");
         }
+        agent->intents.pop_front();
         return true;
     }
 
@@ -130,12 +132,9 @@ bool Interpreter::Run(Environment *env, as::Agent *agent) {
 
         case as::BodyFormula::kReplace:
             {
-                as::Unifies wildcard(frame.body_it->formula);
-                agent->beliefs.erase(
-                    std::remove_if(agent->beliefs.begin(), agent->beliefs.end(), wildcard),
-                    agent->beliefs.end());
+                agent->RemoveBeliefs(frame.body_it->formula);
             }
-            // Fall through to kAdd. TODO: Refactor?
+            // Fall through to kAdd.
 
         case as::BodyFormula::kAdd:
             {
@@ -145,12 +144,7 @@ bool Interpreter::Run(Environment *env, as::Agent *agent) {
                     as::BeliefAtom belief = boost::get<BeliefAtom>(formula);
 
                     if (as::IsGround()(belief)) {
-                        agent->beliefs.push_back(belief);
-                        std::deque<as::IntentionFrame> event;
-                        as::IntentionFrame frame(belief);
-                        frame.goal_type = as::Plan::kBelief;
-                        event.push_front(frame);
-                        agent->intents.push_front(event);
+                        agent->AddBelief(belief);
                     } else {
                         throw std::runtime_error("only *ground* belief atoms can be added to the belief base");
                     }

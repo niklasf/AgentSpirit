@@ -1,4 +1,5 @@
 agentspirit
+agentspirit-mpi
 test
 
 .depend
@@ -6,6 +7,8 @@ test
 src/test.o
 src/term.o
 src/main.o
+src/main-mpi.o
+src/main-cow.o
 src/unification.o
 src/printer.o
 src/runtime/environment.o

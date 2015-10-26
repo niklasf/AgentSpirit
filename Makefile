@@ -6,7 +6,7 @@ CXXFLAGS=-std=c++11 -DBOOST_MPL_LIMIT_LIST_SIZE=30 -DBOOST_MPL_CFG_NO_PREPROCESS
 
 OBJS=src/term.o src/unification.o src/printer.o src/runtime/environment.o src/runtime/interpreter.o
 
-all: .depend agentspirit agentspirit-mpi test
+all: .depend test agentspirit agentspirit-mpi
 
 agentspirit: $(OBJS) src/main.o
 	$(CXX) $(CXXFLAGS) -o $@ $(OBJS) src/main.o $(LDFLAGS)
@@ -26,6 +26,7 @@ clean:
 	-rm $(OBJS)
 	-rm test
 	-rm agentspirit
+	-rm agentspirit-mpi
 
 .PHONY: .depend
 .depend:

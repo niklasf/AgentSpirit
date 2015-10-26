@@ -17,6 +17,7 @@
 #include "printer.h"
 
 #include <vector>
+#include <iostream>
 
 namespace as {
 

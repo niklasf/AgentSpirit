@@ -112,6 +112,27 @@ struct Agent {
     std::vector<Rule> rules;
 
     std::vector<Plan> plans;
+
+    void AddBelief(const BeliefAtom &belief) {
+        beliefs.push_back(belief);
+
+        IntentionFrame eventFrame(belief);
+        eventFrame.goal_type = Plan::kBelief;
+
+        intents.push_back({ eventFrame });
+    }
+
+    void RemoveBeliefs(const as::BeliefAtom &prototype) {
+        RemoveBeliefs(as::Term(prototype));
+    }
+
+    void RemoveBeliefs(const as::Term &pattern) {
+        as::Unifies condition(pattern);
+
+        beliefs.erase(
+            std::remove_if(beliefs.begin(), beliefs.end(), condition),
+            beliefs.end());
+    }
 };
 
 }  // namespace as
